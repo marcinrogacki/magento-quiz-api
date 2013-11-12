@@ -25,7 +25,7 @@
 				if(class_exists($model)){
 					$registry = Registry::getInstance();
 					$registry->$name = new $model;
-					return true;
+					return $registry->$name;
 				}
 			}
 			throw new Exception('Model issues.');	

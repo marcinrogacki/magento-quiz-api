@@ -6,11 +6,12 @@
 		}
 		public function index(){
 
-				$this->load->model('posts');
+				$this->model('posts');
 
 				$vars['title'] = 'Dynamic title';
 				$vars['posts'] = $this->posts->getEntries();
-				$this->load->view('index',$vars);	
+				$vars['robak'] = 'ROBAK';
+				$this->view('index', $vars);	
 		}
 
 	}

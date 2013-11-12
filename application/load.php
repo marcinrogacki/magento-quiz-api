@@ -14,6 +14,7 @@
 			}
 			throw new Exception('View issues');
 		}	
+
 		public function model($name){
 			$model = $name.'Model';
 			$modelPath = SITE_PATH.'models/'.$model.'.php';

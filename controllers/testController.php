@@ -2,15 +2,17 @@
 
 class testController extends baseController{
 	
-	public function index(){
-		echo '<pre>'.print_r(__METHOD__,1).'</pre>';	
-		
+	public function index()
+    {
+		$get = $this->post();
+        $vars['posts'] = $get;
+	    $this->view('test', $vars);	
 	}
 
-
-	public function peas(){
-		echo '<pre>'.print_r(__METHOD__,1).'</pre>';	
-		echo '<pre>'.print_r(func_get_args(),1).'</pre>';	
-		
+	public function add()
+    {
+		$get = $this->post();
+        $vars['posts'] = $get;
+	    $this->view('test', $vars);	
 	}
 }

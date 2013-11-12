@@ -11,6 +11,8 @@ class apiController extends baseController
 
 	public function question()
     {
+        $api = $this->_getApi();
+        $response = $api->getQuestion();
         $this->_send($response);
 	}
     

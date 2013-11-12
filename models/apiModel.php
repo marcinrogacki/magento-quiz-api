@@ -27,6 +27,15 @@ class apiModel extends baseModel
         return $response;
     }
 
+    public function getQuestion()
+    {
+        $data = [
+            'message' => 'Coming soon'
+        ];
+        $response = $this->_jsend(self::JSEND_SUCCESS, $data);
+        return $response;
+    }
+
     /**
      * Format data using the JSend standard
      *

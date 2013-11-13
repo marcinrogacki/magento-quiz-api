@@ -4,6 +4,7 @@ class apiController extends baseController
 {
     public function index() 
     {
+        header('Content-type: application/json');
         $api = $this->_getApi();
         $response = $api->getActions();
         $this->_send($response);
@@ -24,6 +25,6 @@ class apiController extends baseController
     private function _send($response)
     {
         $viewData['response'] = $response;
-	    $this->view('api', $viewData);	
+	    $this->view('api', $viewData, false);	
     }
 }

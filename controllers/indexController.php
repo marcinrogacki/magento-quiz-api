@@ -1,8 +1,9 @@
 <?php
-class indexController extends baseController
-{
-    public function index()
+
+class indexController extends baseController{
+	
+	public function index()
     {
-        $this->view('index');	
-    }
+	    $this->view('index');	
+	}
 }

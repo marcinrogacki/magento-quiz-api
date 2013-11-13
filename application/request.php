@@ -38,7 +38,7 @@
                 $value = isset($postData[$i + 1]) ? $postData[$i + 1] : null; 
                 $args[$key] = $value;
             }
-            $this->_args = $args;
+            $this->_args = array_merge($args, $_POST);
         }
 
 		public function getController(){

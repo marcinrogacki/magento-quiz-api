@@ -1,0 +1,4 @@
+CREATE TABLE question (
+  id INT(10) PRIMARY KEY AUTO_INCREMENT,
+  value TEXT NOT NULL
+);

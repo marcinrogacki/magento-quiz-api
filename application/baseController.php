@@ -16,7 +16,7 @@ abstract class baseController
     public function __construct()
     {
         $this->_registry = Registry::getInstance();
-        $this->_load = new Load;
+        $this->_load = new load;
     }
     
     /**

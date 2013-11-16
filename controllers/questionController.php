@@ -9,6 +9,7 @@ class questionController extends baseController
 
 	public function add()
     {
+        $question = $this->model('question');
         $vars = [
             'title' => 'Add question',
             'js'    => [],

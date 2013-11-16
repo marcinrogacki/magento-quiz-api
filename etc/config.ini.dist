@@ -1,0 +1,5 @@
+[production]
+db.host   = db.example.com
+db.user   = dbuser
+db.passwd = secret
+db.name   = dbname

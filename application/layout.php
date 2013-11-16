@@ -66,6 +66,16 @@
           <div class="row">
             <div class="col-1">
 
+            <?php if (isset($alerts) && count($alerts)): ?>
+              <div class="alerts">
+                <?php foreach ($alerts as $alert): ?>
+                  <div class="alert <?php echo $alert->twitter()?>">
+                    <?php echo $alert->msg(); ?>
+                  </div>
+                <?php endforeach; ?>
+              </div>
+            <?php endif; ?>
+
             <!-- simple render view engine :) -->            
             <?php require($this->_view); ?> 
              
@@ -77,7 +87,8 @@
           <div class="list-group">
             <a href="/" class="list-group-item">Home</a>
             <a href="/demo" class="list-group-item">Demo</a>
-            <a href="/question/add" class="list-group-item">Add Question</a>
+            <a href="/question/add" class="list-group-item">Add question</a>
+            <a href="/question/list" class="list-group-item">List of questions</a>
           </div>
         </div><!--/span-->
       </div><!--/row-->

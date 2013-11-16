@@ -29,7 +29,7 @@ class Load
 
 	}	
 
-	public function model($name){
+	static function model($name){
 		$model = $name.'Model';
 		$modelPath = SITE_PATH.'models/'.$model.'.php';
 
@@ -42,6 +42,6 @@ class Load
 				return $registry->$name;
 			}
 		}
-		throw new Exception('Model issues.');	
+		throw new Exception("Model $model not found.");	
 	}	
 }

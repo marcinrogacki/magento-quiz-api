@@ -1,0 +1,14 @@
+<div class="page-header">
+    <h1>List of questions</h1>
+</div>
+
+<?php if (count($questions)): ?>
+  <ul class="list-group">
+    <?php foreach($questions as $question): ?>
+      <li class="list-group-item"><?php echo $question['question']; ?></li>
+    <?php endforeach; ?>
+  </ul>
+<?php else: ?>
+    <h3>No questions? Add <a href="/question/add"><span class="label label-default">new</span></a>!</h3> 
+<?php endif; ?>
+

@@ -1,6 +1,6 @@
 <?php
 
-abstract class core_model_abstract 
+class core_model_abstract 
 {
     /**
      * @var array

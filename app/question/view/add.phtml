@@ -1,9 +1,23 @@
 <div class="page-header">
     <h1>Add question</h1>
 </div>
+
 <form action="/question/add/post" method="post" role="form">
 
+    <?php if (isset($categories)): ?>
+      <select name="category_id" class="form-control">
+          <option value>Category...</option>
+        <?php foreach ($categories as $category): ?>
+          <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
+        <?php endforeach; ?>
+      </select>
+    <?php endif; ?>
+    <br />
+
     <input name="question" type="text" placeholder="Question" class="form-control">
+    <br />
+
+    <p> Please provide at least 4 answers. No validation available yet :( </p>
     <br />
 
     <div class="input-group">
@@ -41,6 +55,28 @@
       </span>
     </div>
     <br />
+
+    <p> Two more if you want </p>
+    <br />
+
+    <div class="input-group">
+      <input name="answers[4][value]" type="text" placeholder="Answer" class="form-control">
+      <span class="input-group-addon">
+        <span> valid </span>
+        <input name="answers[4][is_valid]" type="checkbox">
+      </span>
+    </div>
+    <br />
+
+    <div class="input-group">
+      <input name="answers[5][value]" type="text" placeholder="Answer" class="form-control">
+      <span class="input-group-addon">
+        <span> valid </span>
+        <input name="answers[5][is_valid]" type="checkbox">
+      </span>
+    </div>
+    <br />
+
 
     <button type="submit" class="btn">Submit</button>
 </form>

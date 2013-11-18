@@ -86,11 +86,18 @@
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
           <div class="list-group">
             <a href="/" class="list-group-item">Home</a>
-            <a href="/demo" class="list-group-item">Demo</a>
+<!--            <a href="/demo" class="list-group-item">Demo</a> -->
             <a href="/question/add" class="list-group-item">Add question</a>
             <a href="/question/list" class="list-group-item">List of questions</a>
           </div>
         </div><!--/span-->
+
+          <div class="col-sm-6 col-md-3">
+            <div class="thumbnail">
+              <img src="/public/to-glory.jpg" alt="...">
+            </div>
+          </div>
+
       </div><!--/row-->
 
       <hr>

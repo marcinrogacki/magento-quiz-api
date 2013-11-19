@@ -10,6 +10,7 @@
         }); 
   </pre> 
 
+<!--
     <h4> api/index </h4>
     <i> params </i>
   <pre class="prettyprint">
@@ -18,7 +19,6 @@
   <button type="submit" onclick="demo('index')">Go</button>
   <pre class="prettyprint" id='index'></pre>
 
-<!--
     <h4> Install </h4>
     <i> params </i>
   <pre class="prettyprint">
@@ -43,18 +43,18 @@
   <pre class="prettyprint" id='installed'></pre>
 -->
 
-    <h4> api/question </h4>
+    <h4> question/api/random </h4>
     <i> params </i>
   <pre class="prettyprint">
     {
     }</pre>
-  <button type="submit" onclick="demo('question')">Go</button>
-  <pre class="prettyprint" id='question'></pre>
+  <button type="submit" onclick="demo('question/api/random')">Go</button>
+  <pre class="prettyprint" id='question/api/random'></pre>
 
   <script>
     function demo(action, params) {
 
-        new Ajax.Request('api/' + action, {
+        new Ajax.Request(action, {
             method: 'get',
             parameters: params,
             onSuccess: function(response) {
@@ -74,5 +74,3 @@
         });
     }
   </script>
-
-

@@ -10,17 +10,17 @@ class core_model_api_jsend
 
     public function success($data)
     {
-        $this->_jsend(self::JSEND_SUCCESS, $data);
+        return $this->_jsend(self::JSEND_SUCCESS, $data);
     }
 
     public function fail($data)
     {
-        $this->_jsend(self::JSEND_FAIL, $data);
+        return $this->_jsend(self::JSEND_FAIL, $data);
     }
 
     public function error($data)
     {
-        $this->_jsend(self::JSEND_ERROR, $data);
+        return $this->_jsend(self::JSEND_ERROR, $data);
     }
 
     /**
@@ -66,5 +66,10 @@ class core_model_api_jsend
         }
 
         return $json;
+    }
+
+    public function header()
+    {
+        header('Content-type: application/json');
     }
 }

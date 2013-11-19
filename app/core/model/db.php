@@ -42,15 +42,39 @@ abstract class core_model_db extends core_model_abstract
         return (bool) $query->fetch();
     }
 
-    public function colletion($raw = true)
+    public function load($value, $column = null)
     {
+        $column = is_null($column) ? $this->primary() : $column;
+
         $adapter = $this->adapter();
-        
+
+        $where = sprintf('%s = ?', $column);
         $query = $adapter->select()
             ->from($this->table())
+            ->where($where, $value)
             ->query();
 
-        return $query->fetchAll();
+        $this->set($query->fetch());
+        return $this->is();
+    }
+
+    public function collection($columns = '*', $whereVal = null, $whereColumn = null)
+    {
+        $adapter = $this->adapter();
+       
+        $select = $adapter->select()
+            ->from($this->table(), $columns);
+ 
+        if ($whereVal) {
+            if (is_null($whereColumn)) {
+                $whereColumn = $this->primary();
+            }
+            $where = sprintf('%s = ?', $whereColumn);
+            $select->where($where, $whereVal);
+        }
+
+        $rows = $select->query()->fetchAll(); 
+        return $rows;
     }
 
     public function save()

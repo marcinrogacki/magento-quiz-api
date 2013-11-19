@@ -11,7 +11,7 @@ class question_controller_add extends core_controller_abstract
             'title' => 'Add question',
             'js'    => [],
             'alerts' => $session->alerts(),
-            'categories' => $category->colletion(),
+            'categories' => $category->collection(),
         ];
 
         $this->view('question/view/add', $vars);

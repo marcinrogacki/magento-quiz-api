@@ -10,7 +10,7 @@ class question_controller_list extends core_controller_abstract
         ];
 
         $question = factories::get()->obj('question_model_base'); 
-        $vars['questions'] = $question->colletion();
+        $vars['questions'] = $question->collection();
         $this->view('question/view/list', $vars, true);
     }
 }

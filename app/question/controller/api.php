@@ -9,15 +9,23 @@ class question_controller_api extends core_controller_api_abstract
 	public function random()
     {
         $categoryId = null;
-        $question = factories::get()->obj('question_model_base');
 
-        $random = factories::get()->obj('random_model_base');
-        $random->load($question);
+        $random = factories::get()->obj('quiz_model_random_question');
+        $random->category($categoryId);
+        $question = $random->load();
+
         $data['question'] = $question->get();
 
-        $answer = factories::get()->obj('question_model_answer');
-        $primary = $question->primary();
-        $data['answers'] = $answer->collection('*', $question->get($primary), 'question_id'); 
+        $random = factories::get()->obj('quiz_model_random_answer');
+        $id = $question->get($question->primary());
+        $random->question($id);
+        $random->valid(1);
+        $random->invalid(3);
+        $answers = $random->collection();
+        $question->answers($answers);
+
+        $data['answers'] = $question->answers();
+
         $this->response($data);
 	}
 }

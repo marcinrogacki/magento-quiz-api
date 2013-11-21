@@ -9,9 +9,9 @@ class question_model_base extends core_model_db
     /**
      * @return array
      */
-    public function answers(question_model_answer $answer = null)
+    public function answers($answer = null)
     {
-        if (is_null($answer)) {
+        if (!is_null($answer)) {
             $this->_answers[] = $answer;
         }
 

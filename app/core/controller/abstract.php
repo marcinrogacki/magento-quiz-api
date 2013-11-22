@@ -36,8 +36,8 @@ abstract class core_controller_abstract
 		    extract($vars);
 	    }
 
-		$this->_layout = SITE_PATH . 'application/layout.php';
-		$this->_view = SITE_PATH.'app/'.$path.'.phtml';
+		$this->_layout = SITE_PATH . 'app/core/view/layout.phtml';
+		$this->_view = SITE_PATH . 'app/' . $path . '.phtml';
 
 		if(!is_readable($this->_layout)){
 		    throw new Exception('Layout has not been found');

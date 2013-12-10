@@ -91,7 +91,7 @@ class core_model_router extends core_model_abstract
     public function dispatch(core_model_request $request)
     {
         $this->_request = $request; 
-		call_user_func(array($this->controllerObj(), $this->action()));
+		call_user_func([ $this->controllerObj(), $this->action() ]);
 		return;
 	}
 

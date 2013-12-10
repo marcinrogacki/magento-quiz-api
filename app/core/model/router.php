@@ -1,98 +1,13 @@
 <?php
 class core_model_router extends core_model_abstract
 {
-    private $_controller;
-
-    private $_module;
-    private $_contr;
-    private $_action;
-    private $_post;
-
-    public function __construct()
-    {
-        $parts = array_filter(explode('/', $_SERVER['REQUEST_URI']));
-    	$this->set($parts);
-    }
-   
-    public function controllerObj()
-    {
-        if (!isset($this->_controller)) {
-
-            $controller = '';
-
-            $factory = factories::get();
-
-            $this->_module = $this->part(1);
-            $this->_contr = $this->part(2);
-            $this->_action = $this->part(3);
-
-            if ($this->module() && $this->controller() && $this->action()) {
-                $controller = $this->module() . '_controller_' . $this->controller();
-                if ($factory->found($controller)) {
-                    $this->_controller = $factory->obj($controller);
-                    if (method_exists($this->_controller, $this->action())) {
-                        $this->_initPost(3);
-                        $this->_request->setPost($this->_post);
-                        $this->_controller->request($this->_request);
-                        return $this->_controller;
-                    }
-                }
-            }
-
-            if ($this->module() && $this->controller()) {
-                $controller = $this->module() . '_controller_' . $this->controller();
-                if ($factory->found($controller)) {
-                    $this->_controller = $factory->obj($controller);
-                    $this->_action = 'index';
-                    $this->_initPost(2);
-                    $this->_request->setPost($this->_post);
-                    $this->_controller->request($this->_request);
-                    return $this->_controller;
-                }
-            }
-
-            if ($this->module()) {
-                $controller = $this->module() . '_controller_index';
-                if ($factory->found($controller)) {
-                    $this->_controller = $factory->obj($controller);
-                    $this->_action = 'index';
-                    $this->_initPost(1);
-                    $this->_request->setPost($this->_post);
-                    $this->_controller->request($this->_request);
-                    return $this->_controller;
-                }
-            }
-
-            $controller = 'index_controller_index';
-            if ($factory->found($controller)) {
-                $this->_controller = $factory->obj($controller);
-                $this->_action = 'index';
-                $this->_initPost(0);
-                $this->_request->setPost($this->_post);
-                $this->_controller->request($this->_request);
-                return $this->_controller;
-            }
-
-            $controller = 'core_controller_index';
-            if ($factory->found($controller)) {
-                $this->_controller = $factory->obj($controller);
-                $this->_action = 'index';
-                $this->_initPost(0);
-                $this->_request->setPost($this->_post);
-                $this->_controller->request($this->_request);
-                return $this->_controller;
-            }
-
-            $this->site404();
-        }
-        return $this->_controller;
-    }
-
     public function dispatch(core_model_request $request)
     {
-        $this->_request = $request; 
-		call_user_func([ $this->controllerObj(), $this->action() ]);
-		return;
+        $controller = $this->route($request);
+        if (!$controller) {
+            $this->site404();
+        }
+		call_user_func([ $controller, $request->action() ]);
 	}
 
     public function site404()
@@ -101,42 +16,64 @@ class core_model_router extends core_model_abstract
         die('404 Not Found');
     }
 
-    public function part($number)
+    public function route(core_model_request $request)
     {
-        return $this->is($number) ? $this->get($number) : false;
-    }
+        $controller = '';
 
-    public function module()
-    {
-        return $this->_module;
-    }
+        $factory = factories::get();
 
-    public function controller()
-    {
-        return $this->_contr;
-    }
-
-    public function action()
-    {
-    	return $this->_action;
-    }
-
-    public function post()
-    {
-    	return $this->_post;
-    }
-
-    private function _initPost($partStart)
-    {
-        $parts = array_slice($this->get(), $partStart);
-        $postData = (isset($parts[0])) ? $parts : array();
-        $args = [];
-        $len = count($postData);
-        for ($i = 0; $i < $len; $i = $i + 2) {
-            $key = $postData[$i];
-            $value = isset($postData[$i + 1]) ? $postData[$i + 1] : null; 
-            $args[$key] = $value;
+        if ($request->module() && $request->controller() && $request->action()) {
+            $controller = $request->module() . '_controller_' . $request->controller();
+            if ($factory->found($controller)) {
+                $controller = $factory->obj($controller);
+                if (method_exists($controller, $request->action())) {
+                    $request->initPost(3);
+                    $controller->request($request);
+                    return $controller;
+                }
+            }
         }
-        $this->_post = array_merge($args, $_POST);
+
+        if ($request->module() && $request->controller()) {
+            $controller = $request->module() . '_controller_' . $request->controller();
+            if ($factory->found($controller)) {
+                $controller = $factory->obj($controller);
+                $request->action('index');
+                $request->initPost(2);
+                $controller->request($request);
+                return $controller;
+            }
+        }
+
+        if ($request->module()) {
+            $controller = $request->module() . '_controller_index';
+            if ($factory->found($controller)) {
+                $controller = $factory->obj($controller);
+                $request->action('index');
+                $request->initPost(1);
+                $controller->request($request);
+                return $controller;
+            }
+        }
+
+        $controller = 'index_controller_index';
+        if ($factory->found($controller)) {
+            $controller = $factory->obj($controller);
+            $request->action('index');
+            $request->initPost(0);
+            $controller->request($request);
+            return $controller;
+        }
+
+        $controller = 'core_controller_index';
+        if ($factory->found($controller)) {
+            $controller = $factory->obj($controller);
+            $request->action('index');
+            $request->initPost(0);
+            $controller->request($request);
+            return $controller;
+        }
+
+        return false;
     }
 }

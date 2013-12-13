@@ -4,10 +4,18 @@ class core_model_router extends core_model_abstract
     public function dispatch(core_model_request $request)
     {
         $controller = $this->route($request);
+
         if (!$controller) {
             $this->site404();
+            return;
         }
-		call_user_func([ $controller, $request->action() ]);
+
+		$request = call_user_func([ $controller, $request->action() ]);
+
+        if (!!$request) {
+            $location = $request->location();
+            header('Location: /' . $location);
+        }
 	}
 
     public function site404()

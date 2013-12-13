@@ -12,9 +12,4 @@ class core_model_factory implements core_model_factory_interface
         $file = SITE_PATH . 'app/' . str_replace('_', '/', $class) . '.php';
         return is_readable($file);
     }
-
-    public function session()
-    {
-        return core_model_session::instance();
-    }
 }

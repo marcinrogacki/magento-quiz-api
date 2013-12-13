@@ -8,6 +8,9 @@ abstract class core_controller_abstract
      */
     abstract public function index();
     
+    /**
+     *
+     */
     public function request(core_model_request $request = null)
     {
         if (is_null($request)) {
@@ -15,21 +18,10 @@ abstract class core_controller_abstract
         }
         $this->_request = $request;
     }
-    
-    public function redirect($path, $permanent = false)    
-    {
-        $router = factories::get()->obj('core_model_router');
-        $request = factories::get()->obj('core_model_request');
-        $router->set([]);
-        $parts = explode('/', $path);
-        $i = 1;
-        foreach ($parts as $part) {
-            $router->set($part, $i);
-            $i++;
-        }
-        $router->dispatch($request);	
-    }
 
+    /**
+     *
+     */
     public function view($path, $vars = null, $layout = true)
     {
 		if (isset($vars)) {

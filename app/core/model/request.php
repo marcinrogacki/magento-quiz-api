@@ -5,15 +5,19 @@ class core_model_request extends core_model_abstract
     private $_contr;
     private $_action;
     private $_post;
+    private $_session;
 
     public function __construct()
     {
-        $parts = array_filter(explode('/', $_SERVER['REQUEST_URI']));
-    	$this->set($parts);
+        $this->_session = factories::get()->obj('session_model_session');
+    }
 
-        $this->_module = $this->part(1);
-        $this->_contr = $this->part(2);
-        $this->_action = $this->part(3);
+    public function session(session_model_session $session = null)
+    {
+        if (is_null($session)) {
+            return $this->_session;
+        }
+        $this->_session = $session;
     }
 
     public function post($key = null)
@@ -32,6 +36,35 @@ class core_model_request extends core_model_abstract
     public function part($number)
     {
         return $this->is($number) ? $this->get($number) : false;
+    }
+
+    public function location($value = null)    
+    {
+        if (is_null($value)) {
+            $location = '';
+            if ($this->module()) {
+                $location = $this->module();
+            } 
+            if ($this->controller()) {
+                $location .= '/' . $this->controller();
+            } 
+            if ($this->action()) {
+                $location .= '/' . $this->action();
+            } 
+
+            return $location;
+        }
+
+        $value = ltrim($value, '/');
+        $parts = explode('/', $value);
+
+        $module = isset($parts[0]) ? $parts[0] : null ;
+        $controller = isset($parts[1]) ? $parts[1] : null ;
+        $action = isset($parts[2]) ? $parts[2] : null ;
+        
+        $this->module($module);
+        $this->controller($controller);
+        $this->action($action);
     }
 
     public function module($value = null)
@@ -69,7 +102,7 @@ class core_model_request extends core_model_abstract
             $value = isset($postData[$i + 1]) ? $postData[$i + 1] : null; 
             $args[$key] = $value;
         }
-        $this->_post = array_merge($args, $_POST);
+        $this->set(array_merge($args, $_POST));
     }
 
     public function clear()

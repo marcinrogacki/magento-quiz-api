@@ -4,7 +4,7 @@ class question_controller_add extends core_controller_abstract
 {
 	public function index()
     {
-        $session = factories::get()->session();
+        $session = $this->request()->session();
         $category = factories::get()->obj('category_model_category');
 
         $vars = [
@@ -41,8 +41,13 @@ class question_controller_add extends core_controller_abstract
         }
         
         $question->save();
-        $session = factories::get()->session();
+
+        $request = factories::get()->obj('core_model_request');
+        $request->location('question/add');
+
+        $session = $request->session();
         $session->success('Question has been added');
-        $this->redirect('question/add'); 
+
+        return $request;
     }
 }

@@ -7,12 +7,8 @@ class session_model_user extends user_model_user
     private function _get($method, $args = [])
     {
         $session = factories::get()->obj('session_model_session');
-        $value = $session->get('user_' . $method);
-        if ($value) {
-            return $value;
-        }
-
         $cookie = $session->cookie('frontend');
+
         if (null === $cookie) {
             $session->remove('user_name');
             $session->remove('user_email');
@@ -23,8 +19,13 @@ class session_model_user extends user_model_user
         $table->load($cookie, 'session'); 
 
         if ($table->exists()) {
+            $value = $session->get('user_' . $method);
+            if ($value) {
+                return $value;
+            }
+
             $user = factories::get()->obj('user_model_table');
-            $user->load($table->get('user_email'), 'email');
+            $user->load($table->get('user_email'));
             parent::_user($user);
         } else {
             $session->removeCookie('frontend');

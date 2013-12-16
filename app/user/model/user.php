@@ -23,17 +23,17 @@ class user_model_user
 
     public function name()
     {
-        return $this->_user->get('name'); 
+        return $this->_user()->get('name'); 
     }
 
     public function surname()
     {
-        return $this->_user->get('surname'); 
+        return $this->_user()->get('surname'); 
     }
 
     public function email()
     {
-        return $this->_user->get('email'); 
+        return $this->_user()->get('email'); 
     }
 
     private function _hash($value)
@@ -47,8 +47,14 @@ class user_model_user
         return $this->_hash($passwd);
     }
 
-    protected function _user(user_model_table $user)
+    protected function _user(user_model_table $user = null)
     {
+        if (is_null($user)) {
+            if (!isset($this->_user)) {
+                $this->_user = factories::get()->obj('user_model_table');
+            }
+            return $this->_user;
+        }
         $this->_user = $user;
     }
 }

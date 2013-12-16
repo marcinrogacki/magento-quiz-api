@@ -6,9 +6,24 @@
 
     <?php if (isset($categories)): ?>
       <select name="category_id" class="form-control">
-          <option value>Category...</option>
+
+        <option value="" disabled selected>Choose Category</option> 
+
         <?php foreach ($categories as $category): ?>
-          <option value="<?php echo $category['id']; ?>"><?php echo $category['category']; ?></option>
+            
+            <?php $subcategories = $category->subcategories(); ?>
+
+            <?php if (!is_null($subcategories)): ?>
+
+                <optgroup label="<?php echo $category->get('category'); ?>">
+                    <?php foreach ($subcategories as $subcategory): ?>
+                        <option value="<?php echo $subcategory->get('id'); ?>">
+                            <?php echo $subcategory->get('category'); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </optgroup>
+
+            <?php endif; ?>
         <?php endforeach; ?>
       </select>
     <?php endif; ?>
@@ -17,66 +32,44 @@
     <input name="question" type="text" placeholder="Question" class="form-control">
     <br />
 
-    <p> Please provide at least 4 answers. No validation available yet :( </p>
-    <br />
+    <div class="row">
 
-    <div class="input-group">
-      <input name="answers[0][value]" type="text" placeholder="Answer" class="form-control">
-      <span class="input-group-addon">
-        <span> valid </span>
-        <input name="answers[0][is_valid]" type="checkbox">
-      </span>
-    </div>
-    <br />
+      <div class="col-lg-6">
 
-    <div class="input-group">
-      <input name="answers[1][value]" type="text" placeholder="Answer" class="form-control">
-      <span class="input-group-addon">
-        <span> valid </span>
-        <input name="answers[1][is_valid]" type="checkbox">
-      </span>
-    </div>
-    <br />
+        <span class="label label-success">Valid</span>
+        <br />
+        <br />
 
-    <div class="input-group">
-      <input name="answers[2][value]" type="text" placeholder="Answer" class="form-control">
-      <span class="input-group-addon">
-        <span> valid </span>
-        <input name="answers[2][is_valid]" type="checkbox">
-      </span>
-    </div>
-    <br />
+        <button
+                id="answer-valid-add"
+                type="button"
+                onclick="quiz.answer.addValid()"
+                class="btn btn-default"
+        >Add</button>
+        <br />
 
-    <div class="input-group">
-      <input name="answers[3][value]" type="text" placeholder="Answer" class="form-control">
-      <span class="input-group-addon">
-        <span> valid </span>
-        <input name="answers[3][is_valid]" type="checkbox">
-      </span>
-    </div>
-    <br />
+      </div><!-- /.col-lg-6 -->
 
-    <p> Two more if you want </p>
-    <br />
+      <div class="col-lg-6 pull-righ">
 
-    <div class="input-group">
-      <input name="answers[4][value]" type="text" placeholder="Answer" class="form-control">
-      <span class="input-group-addon">
-        <span> valid </span>
-        <input name="answers[4][is_valid]" type="checkbox">
-      </span>
-    </div>
-    <br />
+        <span class="label label-danger" style="float: right !important;">Invalid</span>
+        <br />
+        <br />
 
-    <div class="input-group">
-      <input name="answers[5][value]" type="text" placeholder="Answer" class="form-control">
-      <span class="input-group-addon">
-        <span> valid </span>
-        <input name="answers[5][is_valid]" type="checkbox">
-      </span>
-    </div>
-    <br />
+        <button
+                id="answer-invalid-add"
+                type="button"
+                onclick="quiz.answer.addInvalid()"
+                class="btn btn-default pull-righ"
+                style="float: right !important;"
+        >Add</button>
+        <br />
 
+      </div><!-- /.col-lg-6 -->
+
+    </div><!-- /.row -->
+    <br />
 
     <button type="submit" class="btn">Submit</button>
+
 </form>

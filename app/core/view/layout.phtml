@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+    $session = factories::get()->obj('session_model_session');
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -39,15 +42,24 @@
         </div>
 
         <div class="collapse navbar-collapse">
-          <form action="/user/login" method="post" class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Sign in</button>
-          </form>
+
+          <?php if ($session->user()->name()): ?>
+               <form action="/user/logout/post" method="post" class="navbar-form navbar-right">
+                <div class="navbar-brand">Hello <?php echo $session->user()->name(); ?></div>
+                <button type="submit" class="btn btn-info">Sign out</button>
+              </form>
+          <?php else: ?>
+              <form action="/user/login/post" method="post" class="navbar-form navbar-right">
+                <div class="form-group">
+                  <input name='email' type="text" placeholder="Email" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input name='password' type="password" placeholder="Password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success">Sign in</button>
+              </form>
+          <?php endif; ?>
+
         </div><!--/.navbar-collapse -->
       </div><!-- /.container -->
 
@@ -66,6 +78,7 @@
           <div class="row">
             <div class="col-1">
 
+            <?php $alerts = $session->alerts(); ?>
             <?php if (isset($alerts) && count($alerts)): ?>
               <div class="alerts">
                 <?php foreach ($alerts as $alert): ?>
@@ -83,20 +96,21 @@
           </div><!--/row-->
         </div><!--/span-->
 
+        <?php if ($session->user()->isLoggedIn()): ?>
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
           <div class="list-group">
             <a href="/" class="list-group-item">Home</a>
-<!--            <a href="/demo" class="list-group-item">Demo</a> -->
             <a href="/question/add" class="list-group-item">Add question</a>
             <a href="/question/list" class="list-group-item">List of questions</a>
           </div>
         </div><!--/span-->
 
-          <div class="col-sm-6 col-md-3">
-            <div class="thumbnail">
-              <img src="/public/to-glory.jpg" alt="...">
-            </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="thumbnail">
+            <img src="/public/to-glory.jpg" alt="...">
           </div>
+        </div>
+        <?php endif; ?>
 
       </div><!--/row-->
 

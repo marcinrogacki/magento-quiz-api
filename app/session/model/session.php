@@ -17,11 +17,28 @@ class session_model_session
 
     public function user()
     {
+        return factories::get()->obj('session_model_user');
     }
 
-    public function cookie($name, $value)
+    public function cookie($name, $value = null)
     {
-       setcookie($name, $value, strtotime('+14 days'), '/');
+        if (null !== $value) {
+            setcookie($name, $value, strtotime('+14 days'), '/');
+        } else if (isset($_COOKIE[$name])) {
+            return $_COOKIE[$name];
+        }
+        return null;
+    }
+
+    public function removeCookie($name)
+    {
+        if (isset($_COOKIE[$name])) {
+            unset($_COOKIE[$name]);
+            setcookie($name, null, -1, '/');
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function set($key, $value)

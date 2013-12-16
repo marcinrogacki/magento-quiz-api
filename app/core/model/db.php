@@ -91,6 +91,19 @@ abstract class core_model_db extends core_model_abstract
         }
     } 
 
+    public function delete()
+    {
+        if ($this->exists()) {
+            $adapter = $this->adapter();
+            $id = $this->primary();
+            $value = $this->get($this->primary());
+            $where = $adapter->quoteInto("$id = ?", $value);
+            $adapter->delete($this->table(), $where); 
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Defines validation for properties
      * @return array

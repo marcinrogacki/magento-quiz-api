@@ -2,21 +2,53 @@
 /**
  *
  */
-class user_model_user extends core_model_db
+class user_model_user
 {
-    /**
-     * Gets table name.
-     */
-    public function table()
+    private $_user;
+
+    private $_passwordSalt = 'no_rainbow_please';
+   
+    public function login($email, $passwd)
     {
-        return 'user';
+        $user = factories::get()->obj('user_model_table');
+
+        $user->load($email, 'email');
+        $hashed = $this->_encrtypt($passwd);
+        if ($user->exists() && $hashed === $user->get('password')) {
+            $this->_user($user);
+            return true;
+        }
+        return false;
     }
 
-    /**
-     * Gets id column name.
-     */
-    public function primary()
+    public function name()
     {
-        return 'id';
+        return $this->_user->get('name'); 
+    }
+
+    public function surname()
+    {
+        return $this->_user->get('surname'); 
+    }
+
+    public function email()
+    {
+        return $this->_user->get('email'); 
+    }
+
+    private function _hash($value)
+    {
+        return hash('sha256', $value);
+    }
+
+    private function _encrtypt($passwd)
+    {
+        $passwd .= $this->_passwordSalt;
+        return $this->_hash($passwd);
+    }
+
+    protected function _user(user_model_table $user)
+    {
+        $this->_user = $user;
     }
 }

@@ -61,6 +61,19 @@ class session_model_session
         return null;
     }
 
+//    public function form(core_controller_abstract $controller, $data = null)
+//    {
+//        $class = get_class($controller);
+//
+//        $e = new Exception();
+//        $trace = $e->getTrace();
+//        $funcion= isset($trace[1]) ? $trace[1]['function'];
+//    }
+//
+//    public function retriveForm(core_controller_abstract $controller)
+//    {
+//    }
+
     public function success($msg)
     {
         $this->_alert('success', $msg); 

@@ -6,7 +6,23 @@ quiz.answer = (function () {
         invalid         = 0
         ;
 
-    function addValid() {
+    function populate() {
+        var data = JSON.parse($('#form_question_data').val());
+
+        $('#form_question select[name=category_id]').val(data['category_id']);
+        $('#form_question input[name=question]').val(data['question']);
+
+        data['valid'].forEach(function(entry) {
+            addValid(entry.value);
+        });
+        data['invalid'].forEach(function(entry) {
+            addInvalid(entry.value);
+        });
+
+    }
+
+    function addValid(text) {
+        text = typeof text !== 'undefined' ? text : '';
 
         var wrapper     = document.createElement('div');
         var div         = document.createElement('div');
@@ -21,6 +37,7 @@ quiz.answer = (function () {
         input.placeholder   = 'Answer';
         input.type          = 'text';
         input.name          = 'valid[' + valid + '][value]';
+        input.value         = text;
 
         spanAddon.className = 'input-group-addon';
 
@@ -39,7 +56,8 @@ quiz.answer = (function () {
         valid++;
     }
 
-    function addInvalid() {
+    function addInvalid(text) {
+        text = typeof text !== 'undefined' ? text : '';
 
         var wrapper     = document.createElement('div');
         var div         = document.createElement('div');
@@ -55,6 +73,7 @@ quiz.answer = (function () {
         input.placeholder   = 'Answer';
         input.type          = 'text';
         input.name          = 'invalid[' + invalid + '][value]';
+        input.value         = text;
 
         spanAddon.className = 'input-group-addon';
 
@@ -75,7 +94,10 @@ quiz.answer = (function () {
 
     return { 
         "addValid": addValid,
-        "addInvalid": addInvalid
+        "addInvalid": addInvalid,
+        "populate": populate 
      };
 
 }());
+
+quiz.answer.populate();

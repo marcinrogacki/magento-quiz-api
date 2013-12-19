@@ -2,9 +2,17 @@
     <h1>Add question</h1>
 </div>
 
-<form action="/question/add/post" method="post" role="form">
+<form id="form_question" action="/question/add/post" method="post" role="form">
 
     <?php if (isset($categories)): ?>
+
+      <input
+            id="form_question_data"
+            type="hidden"
+            name="data"
+            value="<?php echo htmlentities(json_encode($form)); ?>"
+      >
+
       <select name="category_id" class="form-control">
 
         <option value="" disabled selected>Choose Category</option> 
@@ -17,7 +25,8 @@
 
                 <optgroup label="<?php echo $category->get('category'); ?>">
                     <?php foreach ($subcategories as $subcategory): ?>
-                        <option value="<?php echo $subcategory->get('id'); ?>">
+                        <?php $id = $subcategory->get('id'); ?>
+                        <option value="<?php echo $id ?>">
                             <?php echo $subcategory->get('category'); ?>
                         </option>
                     <?php endforeach; ?>

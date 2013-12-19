@@ -4,7 +4,6 @@ class question_controller_add extends core_controller_abstract
 {
 	public function index()
     {
-        var_dump($this->request()->post());
         $categories = [];
 
         $category = factories::get()->obj('category_model_table');
@@ -15,10 +14,18 @@ class question_controller_add extends core_controller_abstract
         $category->load(2);
         $categories[] = $category;
 
+        $form = $this->request()->session()->get('form_question');
+        $this->request()->session()->remove('form_question');
+        $form['category_id'] = (isset($form['category_id']) ? $form['category_id'] : '');
+        $form['question'] = (isset($form['question']) ? $form['question'] : '');
+        $form['valid'] = (array_key_exists('valid', $form) ? $form['valid'] : []);
+        $form['invalid'] = (array_key_exists('invalid', $form) ? $form['invalid'] : []);
+
         $vars = [
             'title' => 'Add question',
             'js'    => [ '/public/js/answer.js' ],
             'categories' => $categories,
+            'form'       => $form,
         ];
 
         $this->view('question/view/add', $vars);
@@ -29,8 +36,9 @@ class question_controller_add extends core_controller_abstract
         $question = factories::get()->obj('question_model_base'); 
         $request = $this->request();
         $session = $request->session();
+        $session->set('form_question', $request->post()->get());
 
-        $categoryId = $request->post('category_id');
+        $categoryId = $request->post()->get('category_id');
 
         if (!$categoryId) {
             $session->error('Please choose category');
@@ -38,7 +46,7 @@ class question_controller_add extends core_controller_abstract
             return $request; 
         }
 
-        $value = $request->post('question');
+        $value = $request->post()->get('question');
 
         if (!$value) {
             $session->error('Fill question field, please');
@@ -46,7 +54,7 @@ class question_controller_add extends core_controller_abstract
             return $request; 
         }
 
-        $valid = $this->request()->post('valid'); 
+        $valid = $this->request()->post()->get('valid'); 
         $valid = (isset($valid) ? $valid : []);
         $validCount = 0;
         foreach ($valid as $answer) {
@@ -61,7 +69,7 @@ class question_controller_add extends core_controller_abstract
             return $request; 
         }
 
-        $invalid = $this->request()->post('invalid'); 
+        $invalid = $this->request()->post()->get('invalid'); 
         $invalid = (isset($invalid) ? $invalid : []);
         $invalidCount = 0;
         foreach ($invalid as $answer) {
@@ -103,6 +111,7 @@ class question_controller_add extends core_controller_abstract
 
         $session->success('Question has been added');
         $request->action('index');
+        $session->remove('form_question');
 
         return $request;
     }

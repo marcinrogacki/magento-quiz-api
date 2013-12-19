@@ -4,12 +4,14 @@ class core_model_request extends core_model_abstract
     private $_module;
     private $_contr;
     private $_action;
+
     private $_post;
     private $_session;
 
     public function __construct()
     {
         $this->_session = factories::get()->obj('session_model_session');
+        $this->_post = factories::get()->obj('core_model_post');
     }
 
     public function session(session_model_session $session = null)
@@ -20,17 +22,12 @@ class core_model_request extends core_model_abstract
         $this->_session = $session;
     }
 
-    public function post($key = null)
+    public function post(core_model_post $post = null)
     {
-        if (is_null($key)) {
-            return $this->get();
+        if (is_null($post)) {
+            return $this->_post;
         }
-        return $this->get($key);
-    }
-
-    public function setPost(array $data)
-    {
-        $this->set($data);
+        $this->_post = $post;
     }
 
     public function part($number)
@@ -110,15 +107,14 @@ class core_model_request extends core_model_abstract
             $value = isset($postData[$i + 1]) ? $postData[$i + 1] : null; 
             $args[$key] = $value;
         }
-        $this->set(array_merge($args, $_POST));
+        $this->post()->merge($args);
     }
 
     public function clear()
     {
-        $this->_post = [];
+        $this->_post->set([]);
         $this->_module = null;
         $this->_contr  = null;
         $this->_action = null;
-        $this->_post   = null;
     }
 }

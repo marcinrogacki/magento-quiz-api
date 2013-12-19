@@ -10,7 +10,7 @@ class user_controller_password extends core_controller_abstract
 	public function post()
     {
         $request = $this->request();
-        $password = $request->post('password');
+        $password = $request->post()->get('password');
         $user = $request->session()->user();
         if ($user->changePassword($password)) {
             $request->session()->success('Password has been changed');

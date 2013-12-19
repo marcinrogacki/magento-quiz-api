@@ -8,8 +8,8 @@ class user_controller_login extends core_controller_abstract
 
 	public function post()
     {
-        $email = $this->request()->post('email');
-        $passwd = $this->request()->post('password');
+        $email = $this->request()->post()->get('email');
+        $passwd = $this->request()->post()->get('password');
 
         $session = $this->request()->session();
 

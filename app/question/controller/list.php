@@ -9,8 +9,17 @@ class question_controller_list extends core_controller_abstract
             'js'    => [],
         ];
 
-        $question = factories::get()->obj('question_model_base'); 
-        $vars['questions'] = $question->collection();
+        $userEmail = $this->request()->session()->user()->email();
+        $questions = factories::get()->obj('question_model_base')->collection();
+        foreach ($questions as &$question) {
+            if ($question['user_email'] === $userEmail) {
+                $question['can_edit'] = true;
+            } else {
+                $question['can_edit'] = false;
+            }
+        }
+
+        $vars['questions'] = $questions;
         $this->view('question/view/list', $vars, true);
     }
 }

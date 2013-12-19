@@ -21,6 +21,26 @@ class user_model_user
         return false;
     }
 
+    public function changePassword($value)
+    {
+        $user = factories::get()->obj('user_model_table');
+
+        if (8 > strlen($value)) {
+            return false;
+        }
+
+        $user->load($this->email());
+
+        if ($user->exists()) {
+            $hashed = $this->_encrtypt($value);
+            $user->set($hashed, 'password');
+            $user->save();
+            return true;
+        }
+
+        return false;
+    }
+
     public function name()
     {
         return $this->_user()->get('name'); 

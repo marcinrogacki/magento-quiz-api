@@ -38,16 +38,23 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/index">Magento Quiz API</a>
+          <div class="navbar-text navbar-left">
+              <a class="navbar-brand" href="/index">Magento Quiz API</a>
+          </div>
         </div>
 
         <div class="collapse navbar-collapse">
 
           <?php if ($session->user()->name()): ?>
-               <form action="/user/logout/post" method="post" class="navbar-form navbar-right">
-                <div class="navbar-brand">Hello <?php echo $session->user()->name(); ?></div>
-                <button type="submit" class="btn btn-info">Sign out</button>
-              </form>
+
+            <div class="navbar-text navbar-right">
+                <ul class="nav nav-pills">
+                  <li class="navbar-brand">Hello <?php echo $session->user()->name(); ?></li>
+                  <li class="active"><a href="/user/logout/post">Sign out</a></li>
+                  <li class="active"><a href="/user/password">Change Password</a></li>
+                </ul>
+            </div>
+
           <?php else: ?>
               <form action="/user/login/post" method="post" class="navbar-form navbar-right">
                 <div class="form-group">
@@ -64,13 +71,13 @@
       </div><!-- /.container -->
 
     </div><!-- /.navbar -->
-
+    <br /> 
+    <br /> 
+    <br /> 
+    <br /> 
+    <br /> 
     <div class="container">
-       
-      <br /> 
-      <br /> 
-      <br /> 
-      <br /> 
+      
       <div class="row row-offcanvas row-offcanvas-right">
 
         <div class="col-xs-12 col-sm-9">

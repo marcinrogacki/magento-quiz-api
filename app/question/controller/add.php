@@ -4,6 +4,7 @@ class question_controller_add extends core_controller_abstract
 {
 	public function index()
     {
+        var_dump($this->request()->post());
         $categories = [];
 
         $category = factories::get()->obj('category_model_table');

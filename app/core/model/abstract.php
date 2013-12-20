@@ -18,6 +18,16 @@ class core_model_abstract
         }
         $this->_data[$key] = $val;
     }
+ 
+    /**
+     *
+     */
+    public function remove($key)
+    {
+        if (array_key_exists($key, $this->_data)) {
+            unset($this->_data[$key]);
+        }
+    }
     
     /**
      * Generig getter 

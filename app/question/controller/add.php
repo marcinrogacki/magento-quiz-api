@@ -84,7 +84,14 @@ class question_controller_add extends core_controller_abstract
             return $request; 
         }
 
+        $question->load($request->post()->get('question_id'));
         $userEmail = $session->user()->email(); 
+        if ($question->exists() && $question->get('user_email') !== $userEmail) {
+            $session->error('Sorry, you are not an owner of the question');
+            $session->remove('form_question');
+            $request->location('question/add/index');
+            return $request;
+        }
 
         $question->set($value, 'question');
         $question->set($userEmail, 'user_email');
@@ -96,6 +103,7 @@ class question_controller_add extends core_controller_abstract
         foreach ($valid as $data) {
             $data['is_valid'] = 1;
             $answer= factories::get()->obj('question_model_answer'); 
+            $answer->load($data['id']);
             $answer->set($data);
             $answer->set($questionId, 'question_id');
             $answer->save();
@@ -104,12 +112,17 @@ class question_controller_add extends core_controller_abstract
         foreach ($invalid as $data) {
             $data['is_valid'] = 0;
             $answer= factories::get()->obj('question_model_answer'); 
+            $answer->load($data['id']);
             $answer->set($data);
             $answer->set($questionId, 'question_id');
             $answer->save();
         }
 
-        $session->success('Question has been added');
+        if ($request->post()->get('question_id')) {
+            $session->success('Question has been updated');
+        } else {
+            $session->success('Question has been added');
+        }
         $request->action('index');
         $session->remove('form_question');
 

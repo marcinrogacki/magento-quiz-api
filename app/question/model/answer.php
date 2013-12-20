@@ -19,4 +19,12 @@ class question_model_answer extends core_model_db
     {
         return 'id';
     }
+
+    public function save()
+    {
+        if (!$this->get('id')) {
+            $this->remove('id');
+        }
+        parent::save();
+    }
 }

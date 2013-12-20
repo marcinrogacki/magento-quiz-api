@@ -62,6 +62,7 @@ class core_model_request extends core_model_abstract
         $this->module($module);
         $this->controller($controller);
         $this->action($action);
+        $this->set(explode('/', $value));
     }
 
     public function module($value = null)

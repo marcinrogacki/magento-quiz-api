@@ -11,22 +11,26 @@ quiz.answer = (function () {
 
         $('#form_question select[name=category_id]').val(data['category_id']);
         $('#form_question input[name=question]').val(data['question']);
+        $('#form_question input[name=question_id]').val(data['question_id']);
+        console.log(data);
 
         data['valid'].forEach(function(entry) {
-            addValid(entry.value);
+            addValid(entry.value, entry.id);
         });
         data['invalid'].forEach(function(entry) {
-            addInvalid(entry.value);
+            addInvalid(entry.value, entry.id);
         });
 
     }
 
-    function addValid(text) {
+    function addValid(text, id) {
         text = typeof text !== 'undefined' ? text : '';
+        id = typeof id !== 'undefined' ? id : '';
 
         var wrapper     = document.createElement('div');
         var div         = document.createElement('div');
         var input       = document.createElement('input');
+        var hidden      = document.createElement('input');
         var spanAddon   = document.createElement('span');
         var span        = document.createElement('span');
         var br          = document.createElement('br');
@@ -39,6 +43,10 @@ quiz.answer = (function () {
         input.name          = 'valid[' + valid + '][value]';
         input.value         = text;
 
+        hidden.name         = 'valid[' + valid + '][id]';
+        hidden.type         = 'hidden';
+        hidden.value        = id;
+
         spanAddon.className = 'input-group-addon';
 
         span.className      = 'label label-success';
@@ -47,6 +55,7 @@ quiz.answer = (function () {
         div.appendChild(input);
         spanAddon.appendChild(span);
         div.appendChild(spanAddon);
+        div.appendChild(hidden);
         wrapper.appendChild(div);
         wrapper.appendChild(br);
         
@@ -56,12 +65,14 @@ quiz.answer = (function () {
         valid++;
     }
 
-    function addInvalid(text) {
+    function addInvalid(text, id) {
         text = typeof text !== 'undefined' ? text : '';
+        id = typeof id !== 'undefined' ? id : '';
 
         var wrapper     = document.createElement('div');
         var div         = document.createElement('div');
         var input       = document.createElement('input');
+        var hidden      = document.createElement('input');
         var spanAddon   = document.createElement('span');
         var span        = document.createElement('span');
         var br          = document.createElement('br');
@@ -75,6 +86,10 @@ quiz.answer = (function () {
         input.name          = 'invalid[' + invalid + '][value]';
         input.value         = text;
 
+        hidden.name         = 'invalid[' + invalid + '][id]';
+        hidden.type         = 'hidden';
+        hidden.value        = id;
+
         spanAddon.className = 'input-group-addon';
 
         span.className      = 'label label-danger';
@@ -83,6 +98,7 @@ quiz.answer = (function () {
         div.appendChild(input);
         spanAddon.appendChild(span);
         div.appendChild(spanAddon);
+        div.appendChild(hidden);
         wrapper.appendChild(div);
         wrapper.appendChild(br);
         

@@ -44,6 +44,10 @@ abstract class core_model_db extends core_model_abstract
 
     public function load($value, $column = null)
     {
+        if (is_null($value)) {
+            return false;
+        }
+
         $column = is_null($column) ? $this->primary() : $column;
 
         $adapter = $this->adapter();
@@ -54,7 +58,10 @@ abstract class core_model_db extends core_model_abstract
             ->where($where, $value)
             ->query();
 
-        $this->set($query->fetch());
+        $result = $query->fetch();
+        if ($result) {
+            $this->set($result);
+        }
         return $this->is();
     }
 

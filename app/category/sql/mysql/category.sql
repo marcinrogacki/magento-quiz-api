@@ -8,7 +8,6 @@ CREATE TABLE category (
 INSERT INTO category VALUES(1, null, 'Back-end');
 INSERT INTO category VALUES(2, null, 'Front-end');
 
---  BACKEND --
 INSERT INTO category VALUES(3, 1, 'Basics');
 INSERT INTO category VALUES(4, 1, 'Request flow');
 INSERT INTO category VALUES(5, 1, 'Rendering');
@@ -21,4 +20,3 @@ INSERT INTO category VALUES(11, 1, 'Sales and Customers');
 INSERT INTO category VALUES(12, 1, 'Advanced features');
 INSERT INTO category VALUES(13, 1, 'Enterprise edition');
 
---  FRONTEND --

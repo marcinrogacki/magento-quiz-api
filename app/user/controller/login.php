@@ -2,6 +2,14 @@
 
 class user_controller_login extends core_controller_abstract 
 {
+    public function isAllowed()
+    {
+        if ('post' === $this->request()->action()) {
+            return true;
+        }
+        return false;
+    }
+
 	public function index()
     {
     }

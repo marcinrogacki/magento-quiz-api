@@ -89,14 +89,6 @@ class core_model_request extends core_model_abstract
         $this->_action = $value;
     }
 
-    public function isLogin()
-    {
-        if ('user/login/post' === $this->location()) {
-            return true;
-        }
-        return false;
-    }
-
     public function initPost($partStart)
     {
         $parts = array_slice($this->get(), $partStart);

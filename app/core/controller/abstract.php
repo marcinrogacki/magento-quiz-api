@@ -7,7 +7,16 @@ abstract class core_controller_abstract
      * @return void
      */
     abstract public function index();
-    
+
+    public function isAllowed()
+    {
+        $user = $this->request()->session()->user();
+        if ($user->isLoggedIn()) {
+            return true;
+        }
+        return false;
+    }    
+
     /**
      *
      */

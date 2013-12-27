@@ -4,16 +4,16 @@ class core_model_router extends core_model_abstract
     public function dispatch(core_model_request $request)
     {
         $session = factories::get()->obj('session_model_session');
-        $user = $session->user();
-        if (!$request->isLogin() && !$user->isLoggedIn()) {
-            $request->clear();    
-        }
-
         $controller = $this->route($request);
 
         if (!$controller) {
             $this->site404();
             return;
+        }
+
+        if (!$controller->isAllowed()) {
+            $request->clear();    
+            $controller = $this->route($request);
         }
 
 		$request = call_user_func([ $controller, $request->action() ]);

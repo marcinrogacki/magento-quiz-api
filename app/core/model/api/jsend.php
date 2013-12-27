@@ -10,17 +10,17 @@ class core_model_api_jsend
 
     public function success($data)
     {
-        return $this->_jsend(self::JSEND_SUCCESS, $data);
+        return $this->jsend(self::JSEND_SUCCESS, $data);
     }
 
     public function fail($data)
     {
-        return $this->_jsend(self::JSEND_FAIL, $data);
+        return $this->jsend(self::JSEND_FAIL, $data);
     }
 
     public function error($data)
     {
-        return $this->_jsend(self::JSEND_ERROR, $data);
+        return $this->jsend(self::JSEND_ERROR, $data);
     }
 
     /**
@@ -30,9 +30,9 @@ class core_model_api_jsend
      * @param mixed $data
      * @param string $callback
      * @throws Mage_Core_Exception
-     * @return string
+     * @Return string
      */
-    private function _jsend($status, $data, $callback = NULL)
+    public function jsend($status, $data, $callback = NULL)
     {
         $json = [
             'status' => $status
@@ -54,7 +54,7 @@ class core_model_api_jsend
                     $json['message'] = $data;
                 }
                 if (!isset($json['message'])) {
-                    Mage::throwException($this->__('"message" field is mandatory for "error" status code'));
+                    throw new Exception('"message" field is mandatory for "error" status code');
                 }
                 break;
         }

@@ -4,8 +4,10 @@
 
 <?php if (count($questions)): ?>
   <ul class="list-group">
+    <?php $count = 0; ?>
     <?php foreach($questions as $question): ?>
         <div class="input-group">
+        <span class="input-group-addon"><?php echo $count++ ?></span>
           <li class="list-group-item input-group">
           <div><?php echo $question['question']; ?></div>
           <small class="text-muted">onwer: <?php echo $question['user_email']; ?></small>

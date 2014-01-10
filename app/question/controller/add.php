@@ -57,9 +57,11 @@ class question_controller_add extends core_controller_abstract
         $valid = $this->request()->post()->get('valid'); 
         $valid = (isset($valid) ? $valid : []);
         $validCount = 0;
-        foreach ($valid as $answer) {
+        foreach ($valid as $key => $answer) {
             if (!!$answer['value']) {
                 $validCount++;
+            } else {
+                unset($valid[$key]);
             }
         }
 
@@ -72,10 +74,13 @@ class question_controller_add extends core_controller_abstract
         $invalid = $this->request()->post()->get('invalid'); 
         $invalid = (isset($invalid) ? $invalid : []);
         $invalidCount = 0;
-        foreach ($invalid as $answer) {
+        foreach ($invalid as $key => $answer) {
             if (!!$answer['value']) {
                 $invalidCount++;
-            } 
+            } else {
+                unset($invalid[$key]);
+            }
+
         }
 
         if (3 > $invalidCount) {

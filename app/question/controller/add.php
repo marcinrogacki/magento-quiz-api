@@ -20,6 +20,7 @@ class question_controller_add extends core_controller_abstract
         $form['question'] = (isset($form['question']) ? $form['question'] : '');
         $form['valid'] = (array_key_exists('valid', $form) ? $form['valid'] : []);
         $form['invalid'] = (array_key_exists('invalid', $form) ? $form['invalid'] : []);
+        $form['reference'] = (array_key_exists('reference', $form) ? $form['reference'] : []);
 
         $vars = [
             'title' => 'Add question',
@@ -121,6 +122,16 @@ class question_controller_add extends core_controller_abstract
             $answer->set($data);
             $answer->set($questionId, 'question_id');
             $answer->save();
+        }
+
+        $references = $this->request()->post()->get('reference'); 
+        $references = (isset($references) ? $references : []);
+        foreach ($references as $data) {
+            $reference = factories::get()->obj('question_model_question_reference'); 
+            $reference->load($data['id']);
+            $reference->set($data);
+            $reference->set($questionId, 'question_id');
+            $reference->save();
         }
 
         if ($request->post()->get('question_id')) {

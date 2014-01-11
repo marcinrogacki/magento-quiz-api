@@ -50,6 +50,16 @@ class question_controller_edit extends core_controller_abstract
             }
         }
 
+        $references = factories::get()->obj('question_model_question_reference')
+            ->collection('*', $id, 'question_id'); 
+
+        foreach ($references as $reference) {
+            $form['reference'][] = [
+                'id' => $reference['id'],
+                'url' => $reference['url']
+            ];
+        }
+
         $session->set('form_question', $form); 
         $request->location('question/add/index');
         return $request;

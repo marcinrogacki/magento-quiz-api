@@ -3,14 +3,15 @@ abstract class core_controller_api_abstract extends core_controller_abstract
 {
     public function isAllowed()
     {
-        if (!$this->_isApiAllowed()) {
-           $data = []; 
-           $data['secret'] = 'Invalid value';
-           $data['message'] = 'Invalid secret key was provided';
-           $status = core_model_api_jsend::JSEND_ERROR;
-           $this->response($data, $status);
-           die();
-        }
+        /* temporarily disabled */
+//        if (!$this->_isApiAllowed()) {
+//           $data = []; 
+//           $data['secret'] = 'Invalid value';
+//           $data['message'] = 'Invalid secret key was provided';
+//           $status = core_model_api_jsend::JSEND_ERROR;
+//           $this->response($data, $status);
+//           die();
+//        }
         return true;
     }
 

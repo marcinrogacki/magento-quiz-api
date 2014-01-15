@@ -8,43 +8,38 @@ class question_controller_api extends core_controller_api_abstract
 
 	public function random()
     {
-        $categoryId = null;
+        $categoryId = $this->request()->post()->get('category');
 
-        $questionsData = [];
-        for ($i = 0; $i < 10; $i++) {
-            $random = factories::get()->obj('quiz_model_random_question');
-            $random->category($categoryId);
-            $question = $random->load();
+        $random = factories::get()->obj('quiz_model_random_question');
+        $random->category($categoryId);
+        $questions = $random->load();
 
-            $data['question'] = $question->get();
-
+        $data = [];
+        foreach ($questions as $question) {
+            $row['question'] = $question;
             $random = factories::get()->obj('quiz_model_random_answer');
-            $id = $question->get($question->primary());
-            $random->question($id);
+            $random->question($question['id']);
             $random->valid(1);
             $random->invalid(3);
             $answers = $random->collection();
-            $question->answers($answers);
 
-            $answersData = current($question->answers());
-            $data['answers'] = array_column($answersData, 'value');
+            $row['answers'] = array_column($answers, 'value');
 
-            $data['valid'] = key(array_filter($answersData, function($var) {
+            $row['valid'] = key(array_filter($answers, function($var) {
                 return $var['is_valid'] === '1';
             }));
 
             $references = factories::get()->obj('question_model_question_reference')
-                ->collection('*', $id, 'question_id'); 
+                ->collection('*', $question['id'], 'question_id'); 
 
             $urls = [];
             foreach ($references as $reference) {
                 $urls[] = $reference['url'];
             }
-            $data['reference'] = $urls;
-
-            $questionsData[] = $data;
+            $row['reference'] = $urls;
+            $data[] = $row;
         }
 
-        $this->response($questionsData);
+        $this->response($data);
 	}
 }

@@ -17,10 +17,21 @@ class quiz_model_random_question
      */
     public function load()
     {
-        $random = factories::get()->obj('quiz_model_random_db');
-        $random->model('question_model_base');
-        $question = $random->load();
+        $categories = factories::get()->obj('category_model_table')
+            ->collection('*', $this->_categoryId, 'parent_id');
+        $categories = array_column($categories, 'id');
 
-        return $question;
+        $question = factories::get()->obj('question_model_base');
+        $adapter = $question->adapter();
+
+        $select = $adapter->select()
+            ->from($question->table())
+            ->where('category_id IN (?)', $categories);
+
+        $select = ((string) $select) . ' ORDER BY rand() limit 10';
+
+        $questions = $adapter->query($select)->fetchAll(); 
+
+        return $questions;
     } 
 }

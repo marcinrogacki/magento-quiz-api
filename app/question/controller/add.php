@@ -139,6 +139,7 @@ class question_controller_add extends core_controller_abstract
         } else {
             $session->success('Question has been added');
         }
+
         $request->action('index');
         $session->remove('form_question');
 

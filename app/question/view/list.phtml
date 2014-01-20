@@ -2,6 +2,48 @@
     <h1>List of questions</h1>
 </div>
 
+<form id="form_question" action="/question/list" method="post" role="form">
+
+    <button type="submit" class="btn btn-primary btn-lg col-lg-12">Filter</button>
+    <br />
+    <br />
+
+    <input
+          id="form_question_data"
+          type="hidden"
+          name="data"
+          value="<?php echo htmlentities(json_encode('')); ?>"
+    >
+
+    <?php if (isset($categories)): ?>
+
+      <select name="category_id" class="form-control">
+
+        <option value="" disabled selected>Choose Category</option> 
+
+        <?php foreach ($categories as $category): ?>
+            
+            <?php $subcategories = $category->subcategories(); ?>
+
+            <?php if (!is_null($subcategories)): ?>
+
+                <optgroup label="<?php echo $category->get('category'); ?>">
+                    <?php foreach ($subcategories as $subcategory): ?>
+                        <?php $id = $subcategory->get('id'); ?>
+                        <?php $selected = ($id == $selected_category_id ? 'selected' : '');?>
+                        <option value="<?php echo $id ?>" <?php echo $selected; ?>>
+                            <?php echo $subcategory->get('category'); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </optgroup>
+
+            <?php endif; ?>
+        <?php endforeach; ?>
+      </select>
+    <?php endif; ?>
+    <br />
+</form> 
+
 <?php if (count($questions)): ?>
   <ul class="list-group">
     <?php $count = 0; ?>

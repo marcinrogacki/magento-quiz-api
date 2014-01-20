@@ -4,7 +4,6 @@
 
 <form id="form_question" action="/question/add/post" method="post" role="form">
 
-    <?php if (isset($categories)): ?>
 
       <input
             id="form_question_data"
@@ -12,10 +11,12 @@
             name="data"
             value="<?php echo htmlentities(json_encode($form)); ?>"
       >
-
+    
     <button type="submit" class="btn btn-primary btn-lg col-lg-12">Submit Question</button>
     <br />
     <br />
+
+    <?php if (isset($categories)): ?>
 
       <select name="category_id" class="form-control">
 
